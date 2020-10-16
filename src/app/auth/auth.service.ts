@@ -10,10 +10,10 @@ interface AuthResponseData {
   localId: string
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient) {}
-  
+  constructor(private http: HttpClient) { }
+
   signup(email: string, password: string) {
     return this.http.post<AuthResponseData>(
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD0XuyRKYd_pNJw-xTMHumtBrwNe381eSk',
