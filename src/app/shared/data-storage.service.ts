@@ -30,22 +30,20 @@ export class DataStorageService {
       take(1),
       exhaustMap(user => {
         return this.http.get<Recipe[]>(
-          'https://ng-recipe-book-b9194.firebaseio.com/recipes.json',
-          {
-            params: new HttpParams().set('auth', user.token)
-          }
+          'https://ng-recipe-book-b9194.firebaseio.com/recipes.json'
+        ).pipe(
+          map(recipes => {
+            return recipes.map(recipe => {
+              return {
+                ...recipe,
+                ingredients: recipe.ingredients ? recipe.ingredients : []
+              };
+            });
+          }),
+          tap(recipes => {
+            this.recipeService.setRecipes(recipes);
+          })
         );
-      }),
-      map(recipes => {
-        return recipes.map(recipe => {
-          return {
-            ...recipe,
-            ingredients: recipe.ingredients ? recipe.ingredients : []
-          };
-        })
-      }),
-      tap(recipes => {
-        this.recipeService.setRecipes(recipes);
       })
     );
   }
